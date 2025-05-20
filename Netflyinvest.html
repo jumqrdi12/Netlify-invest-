@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Netfly Invest</title>
+  <meta name="theme-color" content="#001f3f">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:700,500,400|Inter:400,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-bg: linear-gradient(135deg, #001f3f 0%, #000000 100%);
+      --accent: #B8FF7D;
+      --text: #F5F5F5;
+      --text-dark: #d5d5d5;
+      --card-bg: #0a2342;
+      --border: #223a50;
+      --shadow: 0 2px 14px 0 rgba(0,0,0,0.15);
+      --radius: 18px;
+      --transition: 0.18s all;
+      --danger: #ff4f4f;
+      --gap: 22px;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background: var(--primary-bg);
+      color: var(--text);
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    a, button, input, select, textarea {
+      font-family: inherit;
+      outline: none;
+    }
+    .hidden { display: none !important; }
+    .container {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 28px 18px 100px 18px;
+    }
+    header {
+      width: 100vw;
+      top: 0; left: 0; z-index: 10;
+      background: rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 10px 10px;
+      position: sticky;
+      box-sizing: border-box;
+      backdrop-filter: blur(5px);
+      gap: 10px;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.45rem;
+      letter-spacing: 1px;
+      color: var(--accent);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.25);
+      margin-left: 12px;
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    }
+    .hamburger {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: -8px;
+      position: relative;
+      z-index: 21;
+      transition: background 0.2s;
+    }
+    .hamburger:hover { background: #01244a33; }
+    .hamburger span, .hamburger span:before, .hamburger span:after {
+      display: block;
+      width: 26px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+      position: absolute;
+      transition: 0.27s;
+    }
+    .hamburger span {
+      left: 7px;
+      top: 18px;
+    }
+    .hamburger span:before {
+      content: '';
+      top: -8px;
+      left: 0;
+      position: absolute;
+      width: 26px;
+    }
+    .hamburger span:after {
+      content: '';
+      top: 8px;
+      left: 0;
+      position: absolute;
+      width: 26px;
+    }
+    .hamburger.active span {
+      background: transparent;
+    }
+    .hamburger.active span:before {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .hamburger.active span:after {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+    .navdrawer {
+      position: fixed;
+      top: 0; left: 0;
+      width: 265px;
+      height: 100vh;
+      background: #07192c;
+      box-shadow: 2px 0 20px rgba(0,0,0,0.28);
+      z-index: 20;
+      transform: translateX(-290px);
+      transition: var(--transition);
+      padding: 40px 0 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .navdrawer.open {
+      transform: translateX(0);
+    }
+    .navdrawer a {
+      padding: 15px 34px 15px 36px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 1.13rem;
+      border: none;
+      outline: none;
+      background: none;
+      transition: background 0.14s, color 0.14s;
+      cursor: pointer;
+      font-weight: 600;
+      text-align: left;
+      border-left: 4px solid transparent;
+      border-radius: 0 22px 22px 0;
+      letter-spacing: 0.1px;
+    }
+    .navdrawer a.active, .navdrawer a:hover {
+      background: #0b2a46;
+      color: var(--accent);
+      border-left: 4.5px solid var(--accent);
+    }
+    .navdrawer .admin {
+      margin-top: 20px;
+      border-top: 1px solid #223a50;
+      padding-top: 14px;
+    }
+    .navdrawer .close-btn {
+      background: none;
+      border: none;
+      color: var(--accent);
+      position: absolute;
+      top: 13px;
+      left: 230px;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+    .deposit-bar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(0,0,0,0.13);
+      border-radius: 15px;
+      padding: 4px 14px 4px 9px;
+      min-width: 0;
+      margin-left: auto;
+      min-height: 45px;
+    }
+    .btn {
+      background: var(--accent);
+      color: #001f3f;
+      border: none;
+      border-radius: 9px;
+      padding: 11px 25px;
+      font-weight: bold;
+      font-size: 1.07rem;
+      box-shadow: 0 2px 10px rgba(184,255,125,0.08);
+      cursor: pointer;
+      transition: background 0.16s, color 0.16s, box-shadow 0.1s;
+      outline: none;
+      margin: 0 2px;
+      letter-spacing: 0.5px;
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    }
+    .btn:hover, .btn:focus {
+      background: #eaffcd;
+      box-shadow: 0 2px 10px #b8ff7d33;
+    }
+    .btn[disabled] {
+      opacity: 0.55;
+      pointer-events: none;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+    }
+    .form {
+      background: var(--card-bg);
+      padding: 32px 20px 24px 20px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      max-width: 420px;
+      margin: 28px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .form label {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 1.06rem;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .form input, .form select {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      margin-bottom: 2px;
+      background: #101d2e;
+      color: var(--text);
+      font-size: 1.11rem;
+      transition: border-color var(--transition), box-shadow 0.09s;
+      margin-top: 3px;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    }
+    .form input:focus, .form select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px #b8ff7d33;
+      outline: none;
+    }
+    .form .input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .form .input-row > * {
+      flex: 1;
+    }
+    .card-list {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--gap);
+      margin-top: 25px;
+      margin-bottom: 34px;
+    }
+    @media (min-width: 600px) {
+      .card-list { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 650px) {
+      .container { padding: 16px 3vw 85px 3vw; }
+      .form { padding: 16px 4vw; }
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 26px 20px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+      border: 1.5px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.17s;
+      min-height: 160px;
+    }
+    .card .title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--accent);
+      text-shadow: 0 1px 6px rgba(0,0,0,0.11);
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    }
+    .card .desc { color: var(--text-dark); font-size: 0.98rem; }
+    .card .label {
+      background: var(--accent);
+      color: #001f3f;
+      border-radius: 7px;
+      padding: 2.5px 13px 3px 13px;
+      font-size: 1.01rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 2px;
+      letter-spacing: 0.3px;
+    }
+    .card .price {
+      color: #f9ffe4;
+      font-weight: bold;
+      font-size: 1.13rem;
+      margin-bottom: 13px;
+      letter-spacing: 0.3px;
+    }
+    .card .invest-btn { margin-top: auto; }
+    .active-invest-list {
+      display: flex;
+      flex-direction: column;
+      gap: 23px;
+      margin: 22px 0 36px 0;
+    }
+    .floating-announcement {
+      position: fixed;
+      right: 22px;
+      bottom: 18px;
+      background: #001f3fDD;
+      color: var(--accent);
+      border-radius: 17px 17px 4px 17px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.25);
+      padding: 17px 27px 16px 19px;
+      font-size: 1.06rem;
+      z-index: 80;
+      min-width: 220px;
+      min-height: 32px;
+      max-width: 97vw;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      animation: slideInAnn 1s;
+      cursor: pointer;
+      font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    }
+    .floating-announcement .close-ann {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 10px;
+      margin-top: -2px;
+    }
+    @keyframes slideInAnn {
+      from { transform: translateY(60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .saldo-bar {
+      color: var(--accent);
+      background: #011b34;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 8px 15px 8px 13px;
+      font-size: 1.13rem;
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .menu-dev-form {
+      display: flex; flex-direction: column; gap: 9px; margin-top: 11px;
+    }
+    .developer-menu-list {
+      display: flex; flex-direction: column; gap: 19px; margin: 17px 0;
+      background: var(--card-bg); border-radius: var(--radius); padding: 20px 16px;
+      box-shadow: var(--shadow); border: 1.5px solid var(--border);
+      max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    .dev-table {
+      width: 100%; border-collapse: collapse; font-size: 1.01rem;
+    }
+    .dev-table th, .dev-table td {
+      padding: 8px 5px; border-bottom: 1px solid #223a50;
+      text-align: left;
+    }
+    .dev-table th { color: var(--accent); font-weight: bold; }
+    .dev-table td { color: var(--text-dark); }
+    .dev-btn-small {
+      font-size: 0.99rem;
+      padding: 5px 13px;
+      border-radius: 6px;
+      margin-left: 4px;
+      margin-top: 2px;
+    }
+    .dev-ann-form input, .dev-ann-form textarea {
+      margin: 3px 0 8px 0; width: 100%;
+      font-size: 1.06rem;
+      border-radius: 7px;
+      border: 1.2px solid var(--border);
+      background: #101d2e;
+      color: var(--text);
+      padding: 8px 12px;
+    }
+    .dev-ann-form textarea { min-height: 55px; resize: vertical; }
+    .withdraw-anim {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      margin: 45px auto 0 auto; text-align: center;
+      color: var(--accent);
+      font-size: 1.22rem;
+      animation: fadeInWithdraw 1.3s;
+    }
+    @keyframes fadeInWithdraw {
+      from { opacity: 0; transform: scale(0.92);}
+      to { opacity: 1; transform: scale(1);}
+    }
+    .referral-link-bar, .referral-info {
+      background: var(--card-bg);
+      border-radius: 13px;
+      padding: 20px 16px;
+      margin: 22px 0 14px 0;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 1.04rem;
+    }
+    .referral-link-bar .copy-btn {
+      margin-top: 8px;
+      font-size: 0.99rem;
+      padding: 7px 15px;
+      border-radius: 7px;
+    }
+    .riwayat-list, .withdraw-list {
+      background: var(--card-bg);
+      border-radius: 13px;
+      padding: 15px 9px 8px 9px;
+      margin: 13px 0 11px 0;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      font-size: 1.01rem;
+    }
+    .riwayat-list ul, .withdraw-list ul {
+      padding: 0; margin: 0; list-style: none;
+    }
+    .riwayat-list li, .withdraw-list li {
+      padding: 8px 2px;
+      border-bottom: 1px solid #223a50;
+      color: var(--text-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .riwayat-list li:last-child, .withdraw-list li:last-child { border-bottom: none; }
+    .pin-form { margin: 38px auto 0 auto; max-width: 260px; }
+    .pin-form input[type="password"] {
+      font-size: 1.25rem; text-align: center; letter-spacing: 6px; width: 100%;
+      margin-bottom: 12px;
+      background: #011b34; color: var(--accent); border: 1.5px solid var(--accent);
+      border-radius: 9px; padding: 12px 8px;
+    }
+    .floating-overlay {
+      position: fixed; top:0; left:0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.38); z-index: 19; display: none;
+    }
+    .floating-overlay.show { display: block }
+    .saldo-bar .saldo-amount {
+      font-size: 1.17rem;
+      font-weight: bold;
+    }
+    .navdrawer .dev-mode {
+      margin-top: 12px;
+      padding-top: 7px;
+      border-top: 1.2px solid #223a50;
+    }
+    @media (max-width: 460px) {
+      .container { padding: 10px 3vw 90px 3vw; }
+      .form { padding: 11px 3vw; }
+      .floating-announcement { right: 5vw; }
+      header { padding: 10px 4vw 7px 2vw;}
+      .logo { margin-left: 2vw; }
+    }
+    ::-webkit-scrollbar { width: 6px; background: #001f3f; }
+    ::-webkit-scrollbar-thumb { background: #01244a; border-radius: 7px; }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="hamburger" aria-label="Menu"><span></span></button>
+    <span class="logo">Netfly Invest</span>
+    <div class="deposit-bar">
+      <button class="btn" id="depositBtn">Deposit</button>
+      <div class="saldo-bar">
+        <svg width="18" height="18" style="vertical-align:middle;margin-right:3px;" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="9" r="9" fill="#B8FF7D"/><text x="9" y="13" text-anchor="middle" font-size="10" fill="#001f3f" font-weight="bold">Rp</text></svg>
+        <span class="saldo-amount" id="totalKomisiBar">0</span>
+      </div>
+    </div>
+  </header>
+  <nav class="navdrawer" id="navdrawer">
+    <button class="close-btn" aria-label="Tutup Menu">&times;</button>
+    <a href="#" data-page="produk" class="active">Produk Invest</a>
+    <a href="#" data-page="withdraw">Withdraw</a>
+    <a href="#" data-page="investasi">Investasi Aktif</a>
+    <a href="#" data-page="undangan">Undangan</a>
+    <a href="#" data-page="akun">Akun</a>
+    <div class="dev-mode admin hidden">
+      <a href="#" data-page="developer" class="dev-menu-link">Menu Developer</a>
+    </div>
+  </nav>
+  <div class="floating-overlay" id="overlay"></div>
+  <main class="container">
+    <!-- 1. Pendaftaran -->
+    <section id="page-daftar" class="">
+      <form class="form" id="formDaftar" autocomplete="off">
+        <h2 style="text-align:center;margin-bottom:12px;color:var(--accent)">Daftar Netfly Invest</h2>
+        <label>Nama Lengkap</label>
+        <input type="text" id="inputNama" placeholder="Nama Anda" required maxlength="32">
+        <label>Nomor HP</label>
+        <input type="tel" id="inputHP" placeholder="0812345678" required pattern="^0[0-9]{9,13}$" maxlength="14">
+        <label>Kode Referral (opsional)</label>
+        <input type="text" id="inputReferral" placeholder="Kode Referral">
+        <button class="btn" type="submit">Daftar</button>
+      </form>
+    </section>
+    <section id="page-produk" class="hidden">
+      <h2 style="margin-bottom:8px;color:var(--accent)">Pilih Produk Investasi</h2>
+      <div class="card-list" id="produkList"></div>
+    </section>
+    <section id="page-deposit" class="hidden">
+      <form class="form" id="formDeposit">
+        <h2 style="text-align:center;color:var(--accent)">Deposit Saldo</h2>
+        <label>Jumlah Deposit (Rp)</label>
+        <input type="number" min="10000" step="10000" id="depositAmount" placeholder="Minimal Rp10.000" required>
+        <label>Metode Pembayaran</label>
+        <select id="depositMethod" required>
+          <option value="">Pilih Metode</option>
+          <option value="bca">BCA</option>
+          <option value="bri">BRI</option>
+          <option value="gopay">GoPay</option>
+          <option value="ovo">OVO</option>
+          <option value="dana">DANA</option>
+        </select>
+        <button class="btn" type="submit">Bayar</button>
+      </form>
+    </section>
+    <section id="page-withdraw" class="hidden">
+      <form class="form" id="formWithdraw">
+        <h2 style="text-align:center;color:var(--accent)">Withdraw Saldo</h2>
+        <label>Nomor Rekening / E-wallet</label>
+        <input type="text" id="wdRek" required maxlength="30" placeholder="Nomor Rekening">
+        <label>Metode Pembayaran</label>
+        <select id="wdMethod" required>
+          <option value="">Pilih Metode</option>
+          <option value="bca">BCA</option>
+          <option value="bri">BRI</option>
+          <option value="gopay">GoPay</option>
+          <option value="ovo">OVO</option>
+          <option value="dana">DANA</option>
+        </select>
+        <label>Jumlah Penarikan (Min Rp50.000)</label>
+        <input type="number" id="wdAmount" min="50000" step="10000" required>
+        <button class="btn" type="submit">Kirim</button>
+      </form>
+      <div id="withdrawAnim" class="withdraw-anim hidden">
+        <svg width="54" height="54" style="margin-bottom:9px;" viewBox="0 0 54 54"><circle cx="27" cy="27" r="26" fill="#001f3f" stroke="#B8FF7D" stroke-width="3"/><path d="M16 27.5L24 35.5L38 19.5" stroke="#B8FF7D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Pengajuan Terkirim!</span>
+      </div>
+    </section>
+    <section id="page-investasi" class="hidden">
+      <h2 style="color:var(--accent)">Investasi Aktif</h2>
+      <div class="active-invest-list" id="investasiAktifList"></div>
+      <div id="noInvestMsg" style="color:var(--text-dark);margin-top:28px;text-align:center;"></div>
+    </section>
+    <section id="page-undangan" class="hidden">
+      <h2 style="color:var(--accent)">Undangan & Referral</h2>
+      <div class="referral-link-bar">
+        <div>Bagikan link ini ke teman:</div>
+        <div id="referralLink" style="word-break:break-all;color:var(--accent);font-size:1.09rem;"></div>
+        <button class="btn copy-btn" id="copyReferralBtn">Copy Link</button>
+      </div>
+      <div class="referral-info" id="referralInfo"></div>
+    </section>
+    <section id="page-akun" class="hidden">
+      <h2 style="color:var(--accent)">Akun Saya</h2>
+      <div class="referral-link-bar" id="akunInfo"></div>
+      <div class="riwayat-list">
+        <div style="color:var(--accent);font-weight:600;margin-bottom:3px;">Riwayat Penarikan</div>
+        <ul id="riwayatPenarikan"></ul>
+      </div>
+      <div class="referral-info" id="akunKomisi"></div>
+      <div class="pin-form" id="devPinForm">
+        <input type="password" id="devPin" maxlength="8" placeholder="PIN Developer">
+        <button type="button" class="btn" id="devPinBtn">Masuk Developer</button>
+      </div>
+    </section>
+    <section id="page-developer" class="hidden">
+      <h2 style="color:var(--accent)">Menu Developer</h2>
+      <div class="developer-menu-list">
+        <div>
+          <b>Jumlah User:</b> <span id="devUserCount">0</span>
+        </div>
+        <div>
+          <b>Top 3 User Saldo:</b>
+          <table class="dev-table" id="devTopSaldo">
+          </table>
+        </div>
+        <div>
+          <b>Top 3 Referral:</b>
+          <table class="dev-table" id="devTopReferral">
+          </table>
+        </div>
+        <div>
+          <b>Kelola User:</b>
+          <table class="dev-table" id="devUserTable">
+          </table>
+        </div>
+        <div>
+          <b>Kirim Pengumuman:</b>
+          <form class="dev-ann-form" id="devAnnForm">
+            <input type="text" id="devAnnTitle" placeholder="Judul Pengumuman" maxlength="50" required>
+            <textarea id="devAnnMsg" placeholder="Isi pesan..." maxlength="300" required></textarea>
+            <button type="submit" class="btn dev-btn-small">Kirim Pengumuman</button>
+          </form>
+        </div>
+        <div>
+          <b>List Pengajuan Withdraw:</b>
+          <div class="withdraw-list">
+            <ul id="devWithdrawList"></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="floating-announcement hidden" id="floatingAnn">
+    <span id="floatingAnnMsg"></span>
+    <button class="close-ann" aria-label="Tutup Pengumuman">&times;</button>
+  </div>
+  <script>
+    const produkList = [
+      { id: 1, nama: "Netfly Flexi", hari: 30, komisi: 8000, harga: 50000 },
+      { id: 2, nama: "Netfly Growth", hari: 30, komisi: 16000, harga: 100000 },
+      { id: 3, nama: "Netfly Syariah", hari: 30, komisi: 32000, harga: 200000 },
+      { id: 4, nama: "Netfly Prime", hari: 30, komisi: 40000, harga: 250000 },
+      { id: 5, nama: "Netfly Pro", hari: 30, komisi: 64000, harga: 500000 },
+      { id: 6, nama: "Netfly Maxi", hari: 30, komisi: 128000, harga: 1000000 },
+      { id: 7, nama: "Netfly Elite", hari: 30, komisi: 256000, harga: 3000000 }
+    ];
+    let user = null, users = [], pengumuman = null;
+    let investasiAktif = [], penarikan = [], saldo = 0, komisiReferral = 0;
+    let withdrawList = [], riwayat = [];
+    let isDev = false, devPin = "085395";
+    function loadAll() {
+      user = JSON.parse(localStorage.getItem("nfi_user")||"null");
+      users = JSON.parse(localStorage.getItem("nfi_users")||"[]");
+      pengumuman = JSON.parse(localStorage.getItem("nfi_pengumuman")||"null");
+      investasiAktif = JSON.parse(localStorage.getItem("nfi_investasi")||"[]");
+      penarikan = JSON.parse(localStorage.getItem("nfi_penarikan")||"[]");
+      saldo = parseInt(localStorage.getItem("nfi_saldo")||"0");
+      komisiReferral = parseInt(localStorage.getItem("nfi_komisi_referral")||"0");
+      withdrawList = JSON.parse(localStorage.getItem("nfi_withdrawlist")||"[]");
+      riwayat = JSON.parse(localStorage.getItem("nfi_riwayat")||"[]");
+    }
+    function saveAll() {
+      localStorage.setItem("nfi_user", JSON.stringify(user));
+      localStorage.setItem("nfi_users", JSON.stringify(users));
+      localStorage.setItem("nfi_pengumuman", JSON.stringify(pengumuman));
+      localStorage.setItem("nfi_investasi", JSON.stringify(investasiAktif));
+      localStorage.setItem("nfi_penarikan", JSON.stringify(penarikan));
+      localStorage.setItem("nfi_saldo", saldo+"");
+      localStorage.setItem("nfi_komisi_referral", komisiReferral+"");
+      localStorage.setItem("nfi_withdrawlist", JSON.stringify(withdrawList));
+      localStorage.setItem("nfi_riwayat", JSON.stringify(riwayat));
+    }
+    function formatRupiah(x) {
+      return "Rp" + (x||0).toLocaleString("id-ID");
+    }
+    function getUserByPhone(hp) {
+      return users.find(u => u.hp === hp);
+    }
+    function updateUserDB(ubah) {
+      let idx = users.findIndex(u => u.hp === user.hp);
+      if (idx !== -1) users[idx] = {...users[idx], ...ubah};
+      else users.push({...user, ...ubah});
+      localStorage.setItem("nfi_users", JSON.stringify(users));
+    }
+    function updateCurrentUserSaldo(n) {
+      user.saldo = n;
+      saldo = n;
+      updateUserDB({saldo: n});
+      localStorage.setItem("nfi_saldo", saldo+"");
+      localStorage.setItem("nfi_user", JSON.stringify(user));
+    }
+    function updateCurrentUserReferralKomisi(n) {
+      user.komisiReferral = n;
+      komisiReferral = n;
+      updateUserDB({komisiReferral: n});
+      localStorage.setItem("nfi_komisi_referral", komisiReferral+"");
+      localStorage.setItem("nfi_user", JSON.stringify(user));
+    }
+    function addInvestasiAktif(invest) {
+      investasiAktif.push(invest);
+      localStorage.setItem("nfi_investasi", JSON.stringify(investasiAktif));
+    }
+    function addWithdrawPengajuan(pengajuan) {
+      penarikan.push(pengajuan);
+      withdrawList.push(pengajuan);
+      localStorage.setItem("nfi_penarikan", JSON.stringify(penarikan));
+      localStorage.setItem("nfi_withdrawlist", JSON.stringify(withdrawList));
+    }
+    function addRiwayatPenarikan(row) {
+      riwayat.push(row);
+      localStorage.setItem("nfi_riwayat", JSON.stringify(riwayat));
+    }
+    function setPengumuman(ann) {
+      pengumuman = ann;
+      localStorage.setItem("nfi_pengumuman", JSON.stringify(ann));
+    }
+    function getReferralLink() {
+      return window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(user.hp);
+    }
+    function showPage(page) {
+      document.querySelectorAll('main > section').forEach(s=>s.classList.add('hidden'));
+      document.querySelectorAll('.navdrawer a').forEach(a=>a.classList.remove('active'));
+      const sec = document.getElementById("page-"+page);
+      if (sec) sec.classList.remove('hidden');
+      const nav = document.querySelector(`.navdrawer a[data-page="${page}"]`);
+      if (nav) nav.classList.add('active');
+      if (page === "produk") renderProduk();
+      if (page === "investasi") renderInvestasiAktif();
+      if (page === "undangan") renderUndangan();
+      if (page === "akun") renderAkun();
+      if (page === "developer") renderDevMenu();
+      if (page === "withdraw") {
+        document.getElementById("withdrawAnim").classList.add("hidden");
+        document.getElementById("formWithdraw").classList.remove("hidden");
+      }
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    // Hamburger menu
+    const hamburger = document.querySelector('.hamburger');
+    const navdrawer = document.getElementById('navdrawer');
+    const overlay = document.getElementById('overlay');
+    hamburger.onclick = function() {
+      navdrawer.classList.add('open');
+      overlay.classList.add('show');
+      hamburger.classList.add('active');
+    }
+    document.querySelector('.navdrawer .close-btn').onclick = function() {
+      navdrawer.classList.remove('open');
+      overlay.classList.remove('show');
+      hamburger.classList.remove('active');
+    }
+    overlay.onclick = function() {
+      navdrawer.classList.remove('open');
+      overlay.classList.remove('show');
+      hamburger.classList.remove('active');
+    }
+    document.querySelectorAll('.navdrawer a').forEach(a=>{
+      a.onclick = function(e){
+        e.preventDefault();
+        navdrawer.classList.remove('open');
+        overlay.classList.remove('show');
+        hamburger.classList.remove('active');
+        showPage(a.dataset.page);
+      }
+    });
+    function handlePendaftaran() {
+      const f = document.getElementById("formDaftar");
+      f.onsubmit = function(e){
+        e.preventDefault();
+        let nama = document.getElementById("inputNama").value.trim();
+        let hp = document.getElementById("inputHP").value.trim();
+        if (!/^0[0-9]{9,13}$/.test(hp)) {
+          alert("Nomor HP tidak valid!");
+          return;
+        }
+        let referral = document.getElementById("inputReferral").value.trim();
+        let newUser = {
+          nama, hp, referral, saldo: 0, komisiReferral: 0, blocked: false, isAdmin: false
+        };
+        user = {...newUser};
+        users = JSON.parse(localStorage.getItem("nfi_users")||"[]");
+        if (users.some(u=>u.hp===hp)) {
+          alert("Nomor HP sudah terdaftar, silakan login dengan HP lain.");
+          return;
+        }
+        users.push(newUser);
+        localStorage.setItem("nfi_user", JSON.stringify(user));
+        localStorage.setItem("nfi_users", JSON.stringify(users));
+        if (referral) {
+          let refuser = getUserByPhone(referral);
+          if (refuser && refuser.hp !== hp) {
+            refuser.jmlReferral = (refuser.jmlReferral||0)+1;
+            updateDBUser(refuser.hp, {jmlReferral: refuser.jmlReferral});
+          }
+        }
+        saldo = 0;
+        komisiReferral = 0;
+        investasiAktif = [];
+        localStorage.setItem("nfi_investasi", "[]");
+        localStorage.setItem("nfi_saldo", "0");
+        localStorage.setItem("nfi_komisi_referral", "0");
+        showPage("produk");
+        renderSaldoBar();
+      }
+    }
+    function renderProduk() {
+      let el = document.getElementById("produkList");
+      el.innerHTML = "";
+      produkList.forEach(prod=>{
+        let c = document.createElement('div');
+        c.className = "card";
+        c.innerHTML = `
+          <div class="title">${prod.nama}</div>
+          <div>
+            <span class="label">Komisi Harian: ${formatRupiah(prod.komisi)}/hari</span>
+            <span class="label">${prod.hari} hari</span>
+          </div>
+          <div class="price">${formatRupiah(prod.harga)}</div>
+          <button class="btn invest-btn" data-id="${prod.id}">Invest Sekarang</button>
+        `;
+        el.appendChild(c);
+      });
+      document.querySelectorAll('.invest-btn').forEach(btn=>{
+        btn.onclick = function() {
+          let prod = produkList.find(p=>p.id==btn.dataset.id);
+          if (!prod) return;
+          if (saldo < prod.harga) {
+            alert("Saldo Anda tidak cukup. Silakan deposit.");
+            showPage("deposit");
+            return;
+          }
+          if (user.blocked) {
+            alert("Akun Anda diblokir.");
+            return;
+          }
+          let date = new Date();
+          let invest = {
+            id: Date.now(),
+            nama: prod.nama,
+            hari: prod.hari,
+            komisi: prod.komisi,
+            harga: prod.harga,
+            mulai: date.toISOString(),
+            berjalan: 0,
+            owner: user.hp,
+            selesai: false
+          };
+          addInvestasiAktif(invest);
+          updateCurrentUserSaldo(saldo - prod.harga);
+          if (user.referral) {
+            let refuser = getUserByPhone(user.referral);
+            if (refuser) {
+              let kom = Math.round(prod.harga*0.10);
+              refuser.komisiReferral = (refuser.komisiReferral||0)+kom;
+              updateDBUser(refuser.hp, {komisiReferral: refuser.komisiReferral});
+              if (user.hp === refuser.hp) updateCurrentUserReferralKomisi(refuser.komisiReferral);
+            }
+          }
+          alert("Investasi berhasil, cek di menu Investasi Aktif");
+          showPage("investasi");
+        }
+      });
+    }
+    document.getElementById("depositBtn").onclick = ()=>showPage("deposit");
+    function handleDeposit() {
+      const f = document.getElementById("formDeposit");
+      f.onsubmit = function(e){
+        e.preventDefault();
+        let amount = parseInt(document.getElementById("depositAmount").value||"0");
+        let method = document.getElementById("depositMethod").value;
+        if (amount<10000) return alert("Minimal deposit Rp10.000");
+        if (!method) return alert("Pilih metode pembayaran!");
+        console.log(`[DEPOSIT] Request Tripay: ${user.nama} (${user.hp}) deposit Rp${amount} metode ${method}`);
+        updateCurrentUserSaldo(saldo+amount);
+        if (user.referral) {
+          let refuser = getUserByPhone(user.referral);
+          if (refuser) {
+            let kom = Math.round(amount * 0.10);
+            refuser.komisiReferral = (refuser.komisiReferral||0) + kom;
+            updateDBUser(refuser.hp, {komisiReferral: refuser.komisiReferral});
+            if (user.hp === refuser.hp) updateCurrentUserReferralKomisi(refuser.komisiReferral);
+          }
+        }
+        alert("Deposit berhasil masuk saldo.");
+        showPage("produk");
+        renderSaldoBar();
+      }
+    }
+    function handleWithdraw() {
+      const f = document.getElementById("formWithdraw");
+      f.onsubmit = function(e){
+        e.preventDefault();
+        let rek = document.getElementById("wdRek").value.trim();
+        let method = document.getElementById("wdMethod").value;
+        let amount = parseInt(document.getElementById("wdAmount").value||"0");
+        if(!method) return alert("Pilih metode pembayaran!");
+        if(amount < 50000) return alert("Minimal withdraw Rp50.000");
+        if (amount > saldo+komisiReferral) return alert("Saldo tidak cukup!");
+        let pengajuan = {
+          id: Date.now(),
+          user: user.hp,
+          nama: user.nama,
+          rek,
+          method,
+          amount,
+          waktu: new Date().toISOString(),
+          status: "pending"
+        };
+        addWithdrawPengajuan(pengajuan);
+        addRiwayatPenarikan({
+          waktu: pengajuan.waktu,
+          amount: pengajuan.amount,
+          status: "pending"
+        });
+        if (amount <= saldo) updateCurrentUserSaldo(saldo-amount);
+        else {
+          let sisa = amount-saldo;
+          updateCurrentUserSaldo(0);
+          updateCurrentUserReferralKomisi(komisiReferral-sisa);
+        }
+        console.log(`[TELEGRAM] Pengajuan Withdraw: ${JSON.stringify(pengajuan)}`);
+        f.classList.add('hidden');
+        document.getElementById("withdrawAnim").classList.remove("hidden");
+        setTimeout(()=>{
+          showPage("akun");
+        },1800);
+      }
+    }
+    function renderInvestasiAktif() {
+      let el = document.getElementById("investasiAktifList");
+      el.innerHTML = "";
+      let aktif = investasiAktif.filter(inv=>inv.owner===user.hp && !inv.selesai);
+      if (!aktif.length) {
+        document.getElementById("noInvestMsg").innerHTML = "Belum ada investasi aktif.<br>Cari produk di menu Produk Invest.";
+        return;
+      }
+      document.getElementById("noInvestMsg").innerHTML = "";
+      aktif.forEach(inv=>{
+        let mulaiDate = new Date(inv.mulai);
+        let now = new Date();
+        let diff = Math.floor((now-mulaiDate)/(24*60*60*1000));
+        let berjalan = Math.min(diff, inv.hari);
+        let selesai = berjalan >= inv.hari;
+        let pendapatan = berjalan * inv.komisi;
+        let doneText = selesai ? '<span style="color:#B8FF7D;">(Selesai)</span>' : '';
+        let c = document.createElement('div');
+        c.className = "card";
+        c.innerHTML = `
+          <div class="title">${inv.nama} ${doneText}</div>
+          <div>
+            <span class="label">${inv.hari} hari</span>
+            <span class="label">Komisi: ${formatRupiah(inv.komisi)}/hari</span>
+          </div>
+          <div>Hari berjalan: <b>${berjalan} / ${inv.hari}</b></div>
+          <div>Pendapatan: <span style="color:var(--accent);font-weight:600">${formatRupiah(pendapatan)}</span></div>
+        `;
+        el.appendChild(c);
+        if (!inv.selesai && !selesai) {
+          updateInvestasiSaldo(inv, berjalan, pendapatan);
+        } else if (!inv.selesai && selesai) {
+          inv.selesai = true;
+          updateInvestasiDB(inv.id, {selesai:true});
+        }
+      });
+    }
+    function updateInvestasiSaldo(inv, berjalan, pendapatan) {
+      if (inv.lastPendapatan !== pendapatan) {
+        let selisih = pendapatan - (inv.lastPendapatan||0);
+        if (selisih > 0) {
+          updateCurrentUserSaldo(saldo+selisih);
+        }
+        inv.lastPendapatan = pendapatan;
+        updateInvestasiDB(inv.id, {lastPendapatan:pendapatan});
+      }
+    }
+    function updateInvestasiDB(id, ubah) {
+      let idx = investasiAktif.findIndex(i=>i.id===id);
+      if (idx !== -1) {
+        investasiAktif[idx] = {...investasiAktif[idx], ...ubah};
+        localStorage.setItem("nfi_investasi", JSON.stringify(investasiAktif));
+      }
+    }
+    function updateDBUser(hp, ubah) {
+      let idx = users.findIndex(u=>u.hp===hp);
+      if (idx !== -1) {
+        users[idx] = {...users[idx], ...ubah};
+        localStorage.setItem("nfi_users", JSON.stringify(users));
+      }
+    }
+    function renderUndangan() {
+      document.getElementById("referralLink").innerText = getReferralLink();
+      document.getElementById("copyReferralBtn").onclick = function() {
+        navigator.clipboard.writeText(getReferralLink());
+        this.innerText = "Copied!";
+        setTimeout(()=>this.innerText="Copy Link",900);
+      }
+      let refUsers = users.filter(u=>u.referral === user.hp);
+      let totalRef = refUsers.length;
+      let totalKomReferral = user.komisiReferral||0;
+      let html = `<div>Referral Anda: <b>${totalRef}</b> user<br>
+        Komisi referral: <b style="color:var(--accent);">${formatRupiah(totalKomReferral)}</b></div>
+        <div>Anda dapat <b style="color:var(--accent);">10%</b> komisi dari setiap deposit/referral investasi teman.</div>`;
+      document.getElementById("referralInfo").innerHTML = html;
+    }
+    function renderAkun() {
+      let html = `
+        <div>Nama: <b>${user.nama}</b></div>
+        <div>No HP: <b>${user.hp}</b></div>
+      `;
+      document.getElementById("akunInfo").innerHTML = html;
+      let list = document.getElementById("riwayatPenarikan");
+      list.innerHTML = "";
+      let rows = riwayat.filter(r=>!!r.waktu);
+      if (!rows.length) list.innerHTML = "<li>Belum ada penarikan</li>";
+      else rows.slice().reverse().forEach(r=>{
+        let tgl = new Date(r.waktu).toLocaleDateString("id-ID");
+        list.innerHTML += `<li>${tgl} <span>${formatRupiah(r.amount)} <span style="color:${r.status==='pending'?'#B8FF7D':'#f5f5f5'}">${r.status}</span></span></li>`;
+      });
+      let komisi = saldo + (komisiReferral||0);
+      document.getElementById("akunKomisi").innerHTML = `<div><b>Total Saldo Komisi:</b> <span style="color:var(--accent)">${formatRupiah(komisi)}</span></div>`;
+      document.getElementById("devPinForm").classList.remove('hidden');
+      document.querySelector('.dev-mode').classList.toggle('hidden',!isDev);
+    }
+    document.getElementById("devPinBtn").onclick = function(){
+      let val = document.getElementById("devPin").value.trim();
+      if (val===devPin) {
+        isDev = true;
+        document.getElementById("devPinForm").classList.add('hidden');
+        document.querySelector('.dev-mode').classList.remove('hidden');
+      } else {
+        alert("PIN salah");
+      }
+      document.getElementById("devPin").value = "";
+    };
+    function renderDevMenu() {
+      document.getElementById("devUserCount").innerText = users.length;
+      let topSaldo = [...users].sort((a,b)=>(b.saldo||0)-(a.saldo||0)).slice(0,3);
+      let html = `<tr><th>Nama</th><th>HP</th><th>Saldo</th></tr>`;
+      topSaldo.forEach(u=>{
+        html += `<tr><td>${u.nama}</td><td>${u.hp}</td><td>${formatRupiah(u.saldo||0)}</td></tr>`;
+      });
+      document.getElementById("devTopSaldo").innerHTML = html;
+      let topRef = [...users].sort((a,b)=>(b.komisiReferral||0)-(a.komisiReferral||0)).slice(0,3);
+      html = `<tr><th>Nama</th><th>HP</th><th>Komisi Referral</th></tr>`;
+      topRef.forEach(u=>{
+        html += `<tr><td>${u.nama}</td><td>${u.hp}</td><td>${formatRupiah(u.komisiReferral||0)}</td></tr>`;
+      });
+      document.getElementById("devTopReferral").innerHTML = html;
+      html = `<tr><th>Nama</th><th>HP</th><th>Saldo</th><th>Referral</th><th>Aksi</th></tr>`;
+      users.forEach(u=>{
+        html += `<tr>
+          <td>${u.nama}</td>
+          <td>${u.hp}</td>
+          <td>${formatRupiah(u.saldo||0)}</td>
+          <td>${u.komisiReferral||0}</td>
+          <td>
+            <button class="btn dev-btn-small" onclick="blockUser('${u.hp}')">${u.blocked?'Unblock':'Block'}</button>
+            <button class="btn dev-btn-small" onclick="upKomisi('${u.hp}')">+Komisi</button>
+          </td>
+        </tr>`;
+      });
+      document.getElementById("devUserTable").innerHTML = html;
+      let list = document.getElementById("devWithdrawList");
+      let rows = withdrawList.slice();
+      list.innerHTML = "";
+      if (!rows.length) list.innerHTML = "<li>Tidak ada pengajuan withdraw</li>";
+      else rows.forEach((w,i)=>{
+        list.innerHTML += `<li>
+          <span>${w.nama} (${w.user}) | ${w.method} | ${w.rek} | <b>${formatRupiah(w.amount)}</b></span>
+          <button class="btn dev-btn-small btn-danger" onclick="selesaikanPembayaran(${w.id})">Selesaikan</button>
+        </li>`;
+      });
+    }
+    window.blockUser = function(hp) {
+      let u = getUserByPhone(hp);
+      if (u) {
+        u.blocked = !u.blocked;
+        updateDBUser(hp, {blocked: u.blocked});
+        alert("User "+(u.blocked?"diblokir":"dibuka blokir"));
+        renderDevMenu();
+      }
+    }
+    window.upKomisi = function(hp) {
+      let u = getUserByPhone(hp);
+      if (u) {
+        let val = prompt("Tambah komisi referral (Rp):", "10000");
+        let n = parseInt(val||"0");
+        u.komisiReferral = (u.komisiReferral||0)+n;
+        updateDBUser(hp, {komisiReferral: u.komisiReferral});
+        alert("Komisi bertambah!");
+        renderDevMenu();
+      }
+    }
+    window.selesaikanPembayaran = function(id) {
+      withdrawList = withdrawList.filter(w=>w.id!==id);
+      localStorage.setItem("nfi_withdrawlist", JSON.stringify(withdrawList));
+      alert("Pembayaran selesai");
+      renderDevMenu();
+    }
+    document.getElementById("devAnnForm").onsubmit = function(e){
+      e.preventDefault();
+      let title = document.getElementById("devAnnTitle").value.trim();
+      let msg = document.getElementById("devAnnMsg").value.trim();
+      if (!title||!msg) return;
+      setPengumuman({title,msg,time:Date.now()});
+      renderFloatingAnn();
+      alert("Pengumuman dikirim");
+      this.reset();
+    }
+    function renderFloatingAnn() {
+      const f = document.getElementById("floatingAnn");
+      if (!pengumuman) { f.classList.add("hidden"); return; }
+      f.classList.remove("hidden");
+      document.getElementById("floatingAnnMsg").innerHTML = `<b>${pengumuman.title}</b>: ${pengumuman.msg}`;
+    }
+    document.querySelector(".floating-announcement .close-ann").onclick = function() {
+      document.getElementById("floatingAnn").classList.add("hidden");
+    }
+    function renderSaldoBar() {
+      let komisi = saldo + (komisiReferral||0);
+      document.getElementById("totalKomisiBar").innerText = formatRupiah(komisi);
+    }
+    function checkLogin() {
+      let url = new URL(window.location.href);
+      let ref = url.searchParams.get("ref");
+      if (!user) {
+        if (ref) document.getElementById("inputReferral").value = ref;
+        showPage("daftar");
+      } else {
+        showPage("produk");
+        renderSaldoBar();
+      }
+    }
+    function init() {
+      loadAll();
+      handlePendaftaran();
+      handleDeposit();
+      handleWithdraw();
+      checkLogin();
+      renderSaldoBar();
+      renderFloatingAnn();
+      document.querySelectorAll('.dev-menu-link').forEach(a=>{
+        a.onclick = function(e){
+          e.preventDefault();
+          showPage("developer");
+        }
+      });
+      if (pengumuman) renderFloatingAnn();
+      setInterval(()=>{
+        loadAll();
+        renderSaldoBar();
+        if (!document.getElementById("page-investasi").classList.contains("hidden")) renderInvestasiAktif();
+        if (pengumuman) renderFloatingAnn();
+      },10000);
+    }
+    window.onload = init;
+  </script>
+</body>
+</html>
